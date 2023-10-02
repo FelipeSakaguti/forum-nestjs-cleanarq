@@ -3,7 +3,7 @@ import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
-import { AnswerAttachmentRepository } from '../repositories/answer-attachments-repository'
+import { AnswerAttachmentsRepository } from '../repositories/answer-attachments-repository'
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
@@ -25,7 +25,7 @@ type EditAnswerUseCaseResponse = Either<
 export class EditAnswerUseCase {
   constructor(
     public answersRepository: AnswersRepository,
-    public answerAttachmentRepository: AnswerAttachmentRepository,
+    public AnswerAttachmentsRepository: AnswerAttachmentsRepository,
   ) {}
 
   async execute({
@@ -45,7 +45,7 @@ export class EditAnswerUseCase {
     }
 
     const currentAnswerAttachments =
-      await this.answerAttachmentRepository.findManyByAnswerId(answerId)
+      await this.AnswerAttachmentsRepository.findManyByAnswerId(answerId)
 
     const answerAttachmentList = new AnswerAttachmentList(
       currentAnswerAttachments,

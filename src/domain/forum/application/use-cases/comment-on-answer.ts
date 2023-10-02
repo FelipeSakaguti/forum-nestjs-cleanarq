@@ -1,6 +1,6 @@
 import { AnswersRepository } from '../repositories/answers-repository'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
+import { AnswerComment } from '../../enterprise/entities/answer-comment'
 import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
