@@ -2,11 +2,12 @@ import { Either, left, right } from '@/core/either'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-repository'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { QuestionAttachmentRepository } from '../repositories/question-attachments-repository'
+import { QuestionAttachmentsRepository } from '../repositories/question-attachments-repository'
 import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
 import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface EditQuestionUseCaseRequest {
   questionId: string
@@ -23,10 +24,11 @@ type EditQuestionUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionAttachmentRepository: QuestionAttachmentRepository,
+    private QuestionAttachmentsRepository: QuestionAttachmentsRepository,
   ) {}
 
   async execute({
@@ -47,7 +49,7 @@ export class EditQuestionUseCase {
     }
 
     const currentQuestionAttachments =
-      await this.questionAttachmentRepository.findManyByQuestionId(questionId)
+      await this.QuestionAttachmentsRepository.findManyByQuestionId(questionId)
 
     const questionAttachmentList = new QuestionAttachmentList(
       currentQuestionAttachments,
