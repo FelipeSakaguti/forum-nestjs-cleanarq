@@ -1,6 +1,7 @@
 import { QuestionComment } from '../../enterprise/entities/question-comment'
 import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
 import { Either, right } from '@/core/either'
+import { Injectable } from '@nestjs/common'
 
 interface ListQuestionCommentsUseCaseRequest {
   questionId: string
@@ -14,6 +15,7 @@ type ListQuestionCommentsUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class ListQuestionCommentsUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
