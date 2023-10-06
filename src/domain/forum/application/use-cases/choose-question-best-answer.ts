@@ -4,20 +4,22 @@ import { QuestionsRepository } from '../repositories/questions-repository'
 import { Either, left, right } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
-interface ChooseQuestionnUseCaseRequest {
+interface ChooseQuestionBestAnswerUseCaseRequest {
   answerId: string
   authorId: string
 }
 
-type ChooseQuestionnUseCaseResponse = Either<
+type ChooseQuestionBestAnswerUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
   {
     question: Question
   }
 >
 
-export class ChooseQuestionnUseCase {
+@Injectable()
+export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
     private questionsRepository: QuestionsRepository,
@@ -26,7 +28,7 @@ export class ChooseQuestionnUseCase {
   async execute({
     answerId,
     authorId,
-  }: ChooseQuestionnUseCaseRequest): Promise<ChooseQuestionnUseCaseResponse> {
+  }: ChooseQuestionBestAnswerUseCaseRequest): Promise<ChooseQuestionBestAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {
