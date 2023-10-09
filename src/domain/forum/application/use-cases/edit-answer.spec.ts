@@ -78,4 +78,43 @@ describe('Edit Answer', () => {
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
+
+  it('should sync new and removed attachments when editing an answer', async () => {
+    const newAnswer = makeAnswer()
+
+    await inMemoryAnswersRepository.create(newAnswer)
+
+    inMemoryAnswersAttachmentRepository.items.push(
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('1'),
+      }),
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('2'),
+      }),
+    )
+
+    const result = await sut.execute({
+      authorId: newAnswer.authorId.toValue(),
+      answerId: newAnswer.id.toValue(),
+      content: 'Novo Conteudo',
+      attachmentsIds: ['1', '3'],
+    })
+
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(inMemoryAnswersAttachmentRepository.items).toHaveLength(2)
+      expect(inMemoryAnswersAttachmentRepository.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            attachmentId: new UniqueEntityId('1'),
+          }),
+          expect.objectContaining({
+            attachmentId: new UniqueEntityId('3'),
+          }),
+        ]),
+      )
+    }
+  })
 })

@@ -36,8 +36,6 @@ export class AnswerQuestionUseCase {
       questionId: new UniqueEntityId(questionId),
     })
 
-    await this.answersRepository.create(answer)
-
     const questionAttachments = attachmentsIds.map((attachmentId) => {
       return AnswerAttachment.create({
         attachmentId: new UniqueEntityId(attachmentId),
@@ -46,6 +44,8 @@ export class AnswerQuestionUseCase {
     })
 
     answer.attachments = new AnswerAttachmentList(questionAttachments)
+
+    await this.answersRepository.create(answer)
 
     return right({ answer })
   }
